@@ -11,39 +11,39 @@ class Storage:
 
 
 
-    def create_post(self, post: Post):    #записали пост в хранилище
+    def create_post(self, post: Post):
         self.id_counter += 1
         self.dict[str(self.id_counter)] = post
         return str(self.id_counter)
 
 
 
-    def read_post(self, post_id: str):    #выдаем пост из хранилища
+    def read_post(self, post_id: str):
         try:
             return self.dict[post_id]
         except Exception:
             raise StorageException('no such post')
 
 
-    def read_all_posts(self):    #выдаем все посты
+    def read_all_posts(self):
         return self.dict
 
 
-    def edit_post(self, post_id: str, post: Post):    #перезаписываем пост
+    def edit_post(self, post_id: str, post: Post):
         if post_id in self.dict:
             self.dict[str(post_id)] = post
         else:
             raise StorageException('no such post')
 
 
-    def delete_post(self, post_id: str):     #Удаляем пост
+    def delete_post(self, post_id: str):
         try:
             del self.dict[post_id]
         except Exception:
             raise StorageException('no such post')
 
 
-    def create_comment(self, post_id, comment: Comment):   #добавляем комментарий к посту
+    def create_comment(self, post_id, comment: Comment):
         try:
             self.dict[post_id].comments.append(comment)
             return self.dict[post_id].comments

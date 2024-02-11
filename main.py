@@ -25,15 +25,15 @@ app.json_encoder = MyJSONEncoder
 
 
 
-@app.route(API_ROOT + '/post/', methods=['POST'])  #создаем пост
+@app.route(API_ROOT + '/post/', methods=['POST'])
 def create_post():
-    post_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Grisha"}
+    post_json = request.get_json()
     post = Post(post_json['text'], post_json['author'])
     post.id = my_storage.create_post(post)
     return jsonify({'status': 'success', 'message': f'id {post.id} created'})
 
 
-@app.route(API_ROOT + '/post/<post_id>/', methods=['GET'])   #читаем добавленный пост
+@app.route(API_ROOT + '/post/<post_id>/', methods=['GET'])
 def read_post(post_id: str):
     try:
         return jsonify(my_storage.read_post(post_id))
@@ -41,23 +41,23 @@ def read_post(post_id: str):
         return f'{ex}'
 
 
-@app.route(API_ROOT + '/post/', methods=['GET'])    #читаем все посты
+@app.route(API_ROOT + '/post/', methods=['GET'])
 def read_all_posts():
     return jsonify(my_storage.read_all_posts())
 
 
 
-@app.route(API_ROOT + '/post/<post_id>/', methods=['PUT'])  #редактируем пост
+@app.route(API_ROOT + '/post/<post_id>/', methods=['PUT'])
 def edit_post(post_id: str):
     try:
-        post_json = request.get_json()   #декодируем в словарь    body: {"text": "Excellent!", "author": "Grisha"}
+        post_json = request.get_json()
         post = Post(post_json['text'], post_json['author'])
         my_storage.edit_post(post_id, post)
         return jsonify({'status': 'success', 'message': f'id {post.id} edited'})
     except Exception as ex:
         return f'{ex}'
 
-@app.route(API_ROOT + '/post/<post_id>/', methods=['DELETE'])   #удаляем пост
+@app.route(API_ROOT + '/post/<post_id>/', methods=['DELETE'])
 def delete_post(post_id: str):
     try:
         my_storage.delete_post(post_id)
@@ -66,10 +66,10 @@ def delete_post(post_id: str):
         return f'{ex}'
 
 
-@app.route(API_ROOT + '/post/<post_id>/', methods=['POST'])  #создаем коммент к посту
+@app.route(API_ROOT + '/post/<post_id>/', methods=['POST'])
 def create_comment(post_id: str):
     try:
-        comment_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Grisha"}
+        comment_json = request.get_json()
         comment = Comment(comment_json['text'], comment_json['author'], post_id)
         my_storage.create_comment(post_id, comment)
         return jsonify({'status': 'success', 'message': f'comment to the post: {post_id} created'})
